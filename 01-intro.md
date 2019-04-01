@@ -31,11 +31,13 @@ let myVariable: type = "my value"
 | Boolean   | our old friends `true` and `false`
 | Any       | oh my! you're telling me I don't actually have to plan ahead?
 | Array     | lets add primitive typings to arrays (syntax may vary!) 
-| Tuple     | similar to Arrays--example to follow
+| Tuple     | enforced typings on a specified number elements
 | Enum      | Enforce a set of values -- we can use custom `Type`s in many cases
 | void      | void def
 | null      | null
 | undefined | undefined
+| object    | |
+| never     | |
 
 ### `strings`
 ```typescript
@@ -59,7 +61,7 @@ myBool = false;
 ```
 
 ### `any`
-When a type is not known or required ahead of time, `any` can be used.
+When a data type is not known or required ahead of time, `any` can be used.
 ```typescript
 let myAny: any = 'what should we throw in here?'
 myAny = 7
@@ -97,13 +99,15 @@ Be careful when using the angle bracket notation as it can cause conflicts when 
 ```typescript
 let myStringNumTuple: [string, number] = ["Hello", 42];
 myStringNumTuple = [42, "Hello"] // ☠️ will throw an error at compile time
+```
 
-
-// When accessing an element with a known index, the correct type is retrieved:
+When accessing an element with a known index, the correct type is retrieved:
+```typescript
 console.log(myStringNumTuple[0].substr(1)); // OK
 console.log(myStringNumTuple[1].substr(1)); // Error, 'number' does not have 'substr'
-
-// When accessing an element outside the set of known indices, a union type is used instead:
+```
+When accessing an element outside the set of known indices, a union type is used instead:
+```typescript
 myStringNumTuple[3] = "world"; // OK, 'string' can be assigned to 'string | number'
 
 console.log(myStringNumTuple[5].toString()); // OK, 'string' and 'number' both have 'toString'
@@ -116,8 +120,8 @@ According to the TypeScript docs, Enums allow us to 'give friendly names to a se
 
 ```typescript
 enum Color {Green, Red, Blue}
-let colorChoice: Color = Color.Green // evaluates to 0
-let colorString: string = Color[0] // evaluates to "Green"
+let colorChoice: Color = Color.Green
+let colorString: string = Color[0]
 ```
 This little bit of TS compiles to this mess of JavaScript
 ```js
@@ -128,8 +132,8 @@ var Color;
     Color[Color["Blue"] = 2] = "Blue";
 })(Color || (Color = {}));
 
-var colorChoice = Color.Green; // still evaluates to 0
-var colorString = Color[0] // still evaluates to "Green"
+var colorChoice = Color.Green; // evaluates to 0
+var colorString = Color[0] // evaluates to "Green"
 ```
 
 ![WTF](https://media.giphy.com/media/ukGm72ZLZvYfS/giphy.gif)
