@@ -2,16 +2,32 @@
 
 ### Learning Objectives
 - Describe advantages and disadvantages to using TypeScript
-- Identify and use basic types, interfaces and additional typescript cruft
+- Identify and use basic types, interfaces and additional TypeScript stuff
 - Understand type inference and declaration
 - Configure and use the typescript compiler
 
 ___
 
 # Why TypeScript?
-- Identify bugs at compile time
-- type enforcement in large code bases reduces 
-- moaaar
+- Identifying bugs at compile time is better than finding them at runtime
+- type enforcement in large code bases reduces bugs across the organization/teams/time
+- TypeScript allows ESNext syntax -- so you can start writing future JS today!
+- Lowish barrier to entry
+    - can use it sparingly to start (your JS is probably fine, just add some typings)
+    - implicit and explicit typing 
+
+[TypeScript Docs / Handbook](https://www.typescriptlang.org/docs)
+
+This is a pretty great resource put together by some benevolent dev:
+
+[TypeScript Deep Dive by @basarat](https://basarat.gitbooks.io/typescript/)
+
+# Disadvantages
+- Adds complexity to your project
+    - directory structure needs source and build
+    - setup compiler or babel and/or webpack and build step
+- TS compiler will yell at you for things that you have perceived as legal for the entirety of your JS career
+- Advanced techniques can be a little confusing
 
 ___
 # Basic Types
@@ -33,11 +49,11 @@ let myVariable: type = "my value"
 | Array     | lets add primitive typings to arrays (syntax may vary!) 
 | Tuple     | enforced typings on a specified number elements
 | Enum      | Enforce a set of values -- we can use custom `Type`s in many cases
-| void      | void def
+| void      | used for functions that do not return a value
 | null      | null
 | undefined | undefined
-| object    | |
-| never     | |
+| object    | anything that is not `number`, `string`, `boolean`, `symbol`, `null`, or `undefined`
+| never     | represents the type of values that never occur
 
 ### `strings`
 ```typescript
@@ -93,7 +109,71 @@ let arrayOfAny: any[] = ['what','is','purpose','of','this','array','?!', 2, true
 ```
 Be careful when using the angle bracket notation as it can cause conflicts when working with TSX, the TypeScript equivalent of JSX.
 
-### Tuples
+#### Explicit vs Implicit Typing
+
+
+___
+# Some of the things that TypeScript adds and advanced types
+
+## Unions
+We can enforce types of multiple values with a type declaration on a union
+```typescript
+type Color = 'Green' | 'Red' | 'Blue'
+
+let colorChoice: Color = 'Green' 
+colorChoice: Color = 'Purple' // Throws an error
+```
+___
+## Interfaces
+What if we would like to enforce typings on the shape of an `object`?
+
+**Enter the interface!**
+
+Typescript offers us the ability to do this with `interfaces`:
+
+```typescript
+
+interface DogObject {
+    name: string;
+    age: number;
+    isGood: boolean;
+    wagsTail?: boolean;
+}
+
+function isGoodDog(dog: DogObject): boolean {
+    let {name, age, isGood} = dog;
+    let message = `${name} is ${age} and is very good! ${dog.wagsTail ? 'wag, wag, wag' : ''}`
+    if (!isGood) {
+        console.log('How dare you?!')
+    }
+    console.log(message)
+    return true
+}
+
+let oneGoodBoy: DogObject = {
+    name: 'Harley',
+    age: 7,
+    isGood: true,
+    wagsTail?: true 
+}
+
+let barnCat: object = {
+    name: 'Nightmare',
+    age: infinity,
+    clawedKiller: true,
+    isGood: false
+}
+
+isGoodDog(oneGoodBoy) // ok!
+isGoodDog(barnCat) // Error, barnCat is not 'DogObject' type
+
+
+```
+
+
+___
+
+## Tuples
 >Tuple types allow you to express an array where the type of a fixed number of elements is known, but need not be the same. 
 
 ```typescript
@@ -114,8 +194,8 @@ console.log(myStringNumTuple[5].toString()); // OK, 'string' and 'number' both h
 
 myStringNumTuple[6] = true; // Error, 'boolean' isn't 'string | number'
 ```
-
-### Enum
+___
+## Enum
 According to the TypeScript docs, Enums allow us to 'give friendly names to a set of numeric values'.
 
 ```typescript
@@ -138,8 +218,6 @@ var colorString = Color[0] // evaluates to "Green"
 
 ![WTF](https://media.giphy.com/media/ukGm72ZLZvYfS/giphy.gif)
 ___
-#### Explicit vs Implicit Typing
-
-
+## `Generics<T>`
 
 
