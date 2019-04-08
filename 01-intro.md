@@ -11,9 +11,9 @@ ___
 # Why TypeScript?
 - Identifying bugs at compile time is better than finding them at runtime
 - type enforcement in large code bases reduces bugs across the organization/teams/time
-- TypeScript allows ESNext syntax -- so you can start writing future JS today!
+- TypeScript allows ESNext syntax -- though many of the features highlighted by TS folks have been introduced with ES6 and 7
 - Lowish barrier to entry
-    - can use it sparingly to start (your JS is probably fine, just add some typings)
+    - can use it sparingly to start (your JS is probably fine, just add some typings or `any`)
     - implicit and explicit typing 
 
 [TypeScript Docs / Handbook](https://www.typescriptlang.org/docs)
@@ -28,7 +28,18 @@ This is a pretty great resource put together by some benevolent dev:
     - setup compiler or babel and/or webpack and build step
 - TS compiler will yell at you for things that you have perceived as legal for the entirety of your JS career
 - Advanced techniques can be a little confusing
+___
+## Let's get started!
+Install TypeScript and its compiler on your local machine!
+```bash
+$ npm install -g typescript
+$ tsc -v 
+Version 3.3.X
+```
 
+We're all set!
+
+Let's test it out
 ___
 # Basic Types
 We can get started with TypeScript by adding just a little extra cruft to the JS syntax we know and love. By now, you are all very familiar with the javascript primitives: `string`, `number`, `boolean`. TypeScript makes use of these primitives... and then adds to it!
@@ -40,20 +51,20 @@ In order to apply type constraints to our variables with TypeScript, all we need
 ```typescript
 let myVariable: type = "my value"
 ```
-|Basic Types|   |
+|Basic Types| <= according to the TS Docs 🎉
 |:---------:|---|
 | String    | Your run of the mill string type  
 | Number    | Can be used with decimal integers and floats as well as hex, octal and binary numbers 
 | Boolean   | our old friends `true` and `false`
 | Any       | oh my! you're telling me I don't actually have to plan ahead?
 | Array     | lets add primitive typings to arrays (syntax may vary!) 
+| void      | used for functions that do not return a value
+| null      | `null`, yup
+| undefined | `undefined`, that too 
+| Object    | anything that is not `number`, `string`, `boolean`, `null`, or `undefined`
+| never     | represents the type of values that never occur
 | Tuple     | enforced typings on a specified number elements
 | Enum      | Enforce a set of values -- we can use custom `Type`s in many cases
-| void      | used for functions that do not return a value
-| null      | null
-| undefined | undefined
-| object    | anything that is not `number`, `string`, `boolean`, `symbol`, `null`, or `undefined`
-| never     | represents the type of values that never occur
 
 ### `strings`
 ```typescript
@@ -109,11 +120,21 @@ let arrayOfAny: any[] = ['what','is','purpose','of','this','array','?!', 2, true
 ```
 Be careful when using the angle bracket notation as it can cause conflicts when working with TSX, the TypeScript equivalent of JSX.
 
-#### Explicit vs Implicit Typing
+### Explicit vs Implicit Typing
+All this extra syntax making your headspin?
 
+The typescript compiler can infer some of your typings from the initial definition!
+```typescript
+let str: string = 'I am explicitly defined as a string type'
+let otherStr = 'I am implicitly defined as a string type'
+```
+
+The rules that govern these type inferences can vary and/or be configured by the compiler. 
+
+For more information: [Rules of Type Inference](https://www.typescriptlang.org/docs/handbook/type-inference.html)
 
 ___
-# Some of the things that TypeScript adds and advanced types
+# More Types and TypeScript Syntax
 
 ## Unions
 We can enforce types of multiple values with a type declaration on a union
@@ -154,7 +175,7 @@ let oneGoodBoy: DogObject = {
     name: 'Harley',
     age: 7,
     isGood: true,
-    wagsTail?: true 
+    wagsTail: true 
 }
 
 let barnCat: object = {
@@ -203,7 +224,7 @@ enum Color {Green, Red, Blue}
 let colorChoice: Color = Color.Green
 let colorString: string = Color[0]
 ```
-This little bit of TS compiles to this mess of JavaScript
+While this does enforce a `Color` Type that only has the values `"Green"`, `"Red"`, `"Blue"`... this little bit of TS compiles to this mess of JavaScript:
 ```js
 var Color;
 (function (Color) {
@@ -217,7 +238,8 @@ var colorString = Color[0] // evaluates to "Green"
 ```
 
 ![WTF](https://media.giphy.com/media/ukGm72ZLZvYfS/giphy.gif)
+
+I'm not saying that there are not uses for an `enum` in the wild... but if you are using it to enforce typings like this without the need for reverse mapping of integers to values etc... you are likely better off using a Union type.
 ___
 ## `Generics<T>`
-
 

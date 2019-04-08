@@ -150,7 +150,7 @@ export class Queue<T> extends Storable<T>{
 ## Putting them to work
 ```typescript
 
-const s = Stack<number>() // s, is implicitly typed as a Stack that only accepts numbers
+const s = new Stack<number>() // s, is implicitly typed as a Stack that only accepts numbers
 
 s.push(3) // ok!
 s.push(0xf00d) // weird, but ok!
