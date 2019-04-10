@@ -30,6 +30,7 @@ function isGoodDog(dog: DogObject): boolean {
     let message = `${name} is ${age} and is very good!${dog.wagsTail ? ' wag, wag, wag' : ''}`
     if (!isGood) {
         console.log('How dare you! All dogs are good dogs!!')
+        dog.isGood = true
     }
     console.log(message)
     return true
@@ -42,7 +43,7 @@ let oneGoodBoy: DogObject = {
     wagsTail: true 
 }
 
-let barnCat = {
+let barnCat: object = {
     name: 'Scar Tatteredear',
     age: Infinity,
     clawedKiller: true,
@@ -50,11 +51,13 @@ let barnCat = {
 }
 
 isGoodDog(oneGoodBoy) 
-// ok! this will also work if we remove the explicit type on oneGoodBoy as it matches the shape exactly
+// Works!
 isGoodDog(barnCat) 
 // Error, barnCat is not 'DogObject' type. Argument of type 'object' is not assignable to parameter 
 // of type 'DogObject'. Type '{}' is missing the following properties from type 'DogObject': 
 // name, age, isGood
+// If we removed the Explicit typing from barnCat, isGoodDog(barnCat) would work because barnCat 
+// has all the necessary values of the DogObject type
 
 
 ```
