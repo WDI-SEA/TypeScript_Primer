@@ -10,7 +10,7 @@ ___
 
 # Why TypeScript?
 - Identifying bugs at compile time is better than finding them at runtime
-- type enforcement in large code bases reduces bugs across the organization/teams/time
+- Type enforcement in large code bases reduces bugs across the organization/teams/time
 - TypeScript allows ESNext syntax -- though many of the features highlighted by TS folks have been introduced with ES6 and 7
 - Lowish barrier to entry
     - can use it sparingly to start (your JS is probably fine, just add some typings or `any`)
