@@ -1,5 +1,7 @@
-# Example Linked List with typing enforced by use of generic
+# ![](https://ga-dash.s3.amazonaws.com/production/assets/logo-9f88ae6c9c3871690e33280fcf557f33.png)  Example Linked List with typing enforced by use of generic
 
+
+Codealong template:
 ```typescript
 type ListNode<T> = LLNode<T> | null;
 

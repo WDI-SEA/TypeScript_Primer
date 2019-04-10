@@ -40,6 +40,25 @@ Version 3.3.X
 We're all set!
 
 Let's test it out
+```bash
+$ mkdir ts_sandbox && cd ts_sandbox
+$ touch type_fun.ts
+```
+
+**type_fun.ts**
+```typescript
+let hello: string = "Hello, World!"
+```
+```bash
+$ tsc type_fun.ts
+$ ls
+type_fun.js type_fun.ts
+
+$ cat type_fun.js
+
+var hello = "Hello, World!"
+```
+
 ___
 # Basic Types
 We can get started with TypeScript by adding just a little extra cruft to the JS syntax we know and love. By now, you are all very familiar with the javascript primitives: `string`, `number`, `boolean`. TypeScript makes use of these primitives... and then adds to it!
@@ -66,13 +85,13 @@ let myVariable: type = "my value"
 | Tuple     | enforced typings on a specified number elements
 | Enum      | Enforce a set of values -- we can use custom `Type`s in many cases
 
-### `strings`
+### `string`
 ```typescript
 let myString: string = "Hello, World!"
 let myTemplateLiteral: string = `"${myString}" is the phrase we always use when learning a new language.`
 ```
 
-### `numbers`
+### `number`
 ```typescript
 let myInt: number = 3;
 let myFloat: number = 6.4;
@@ -129,117 +148,8 @@ let str: string = 'I am explicitly defined as a string type'
 let otherStr = 'I am implicitly defined as a string type'
 ```
 
-The rules that govern these type inferences can vary and/or be configured by the compiler. 
+The rules that govern these type inferences can vary and/or be configured by the compiler. In general, if the data type is not primitive, it is unlikely that implicit typping will work.
 
 For more information: [Rules of Type Inference](https://www.typescriptlang.org/docs/handbook/type-inference.html)
 
 ___
-# More Types and TypeScript Syntax
-
-## Unions
-We can enforce types of multiple values with a type declaration on a union
-```typescript
-type Color = 'Green' | 'Red' | 'Blue'
-
-let colorChoice: Color = 'Green' 
-colorChoice: Color = 'Purple' // Throws an error
-```
-___
-## Interfaces
-What if we would like to enforce typings on the shape of an `object`?
-
-**Enter the interface!**
-
-Typescript offers us the ability to do this with `interfaces`:
-
-```typescript
-
-interface DogObject {
-    name: string;
-    age: number;
-    isGood: boolean;
-    wagsTail?: boolean;
-}
-
-function isGoodDog(dog: DogObject): boolean {
-    let {name, age, isGood} = dog;
-    let message = `${name} is ${age} and is very good! ${dog.wagsTail ? 'wag, wag, wag' : ''}`
-    if (!isGood) {
-        console.log('How dare you?!')
-    }
-    console.log(message)
-    return true
-}
-
-let oneGoodBoy: DogObject = {
-    name: 'Harley',
-    age: 7,
-    isGood: true,
-    wagsTail: true 
-}
-
-let barnCat: object = {
-    name: 'Nightmare',
-    age: infinity,
-    clawedKiller: true,
-    isGood: false
-}
-
-isGoodDog(oneGoodBoy) // ok!
-isGoodDog(barnCat) // Error, barnCat is not 'DogObject' type
-
-
-```
-
-
-___
-
-## Tuples
->Tuple types allow you to express an array where the type of a fixed number of elements is known, but need not be the same. 
-
-```typescript
-let myStringNumTuple: [string, number] = ["Hello", 42];
-myStringNumTuple = [42, "Hello"] // ☠️ will throw an error at compile time
-```
-
-When accessing an element with a known index, the correct type is retrieved:
-```typescript
-console.log(myStringNumTuple[0].substr(1)); // OK
-console.log(myStringNumTuple[1].substr(1)); // Error, 'number' does not have 'substr'
-```
-When accessing an element outside the set of known indices, a union type is used instead:
-```typescript
-myStringNumTuple[3] = "world"; // OK, 'string' can be assigned to 'string | number'
-
-console.log(myStringNumTuple[5].toString()); // OK, 'string' and 'number' both have 'toString'
-
-myStringNumTuple[6] = true; // Error, 'boolean' isn't 'string | number'
-```
-___
-## Enum
-According to the TypeScript docs, Enums allow us to 'give friendly names to a set of numeric values'.
-
-```typescript
-enum Color {Green, Red, Blue}
-let colorChoice: Color = Color.Green
-let colorString: string = Color[0]
-```
-While this does enforce a `Color` Type that only has the values `"Green"`, `"Red"`, `"Blue"`... this little bit of TS compiles to this mess of JavaScript:
-```js
-var Color;
-(function (Color) {
-    Color[Color["Green"] = 0] = "Green";
-    Color[Color["Red"] = 1] = "Red";
-    Color[Color["Blue"] = 2] = "Blue";
-})(Color || (Color = {}));
-
-var colorChoice = Color.Green; // evaluates to 0
-var colorString = Color[0] // evaluates to "Green"
-```
-
-![WTF](https://media.giphy.com/media/ukGm72ZLZvYfS/giphy.gif)
-
-I'm not saying that there are not uses for an `enum` in the wild... but if you are using it to enforce typings like this without the need for reverse mapping of integers to values etc... you are likely better off using a Union type.
-___
-## `Generics<T>`
-
