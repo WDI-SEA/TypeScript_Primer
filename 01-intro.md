@@ -182,11 +182,12 @@ function printMsg(message: string): void {
     console.log(message)
 }
 
-printMsg(str) //Totally okay
-printMsg(otherStr) // Also okay!
+printMsg(str) // Works!
+printMsg(otherStr) // Also Works!
 ```
 
 In essence, typescript looks at a variable that isn't typed (in this case `otherStr`) and says, "This looks like a string, follows the sytax of a string, must be a string!"
+
 ![Must be gelfling](https://66.media.tumblr.com/tumblr_m32hrruhGr1qdj4i3o1_r1_500.gif)
 
 This will be more apparent and relevant when we get into interfaces and enforcing object type structures in the next section.
