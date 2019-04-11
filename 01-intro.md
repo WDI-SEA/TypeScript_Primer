@@ -173,10 +173,23 @@ ___
 All this extra syntax making your headspin?
 
 The typescript compiler can infer some of your typings from the initial definition!
+
 ```typescript
 let str: string = 'I am explicitly defined as a string type'
 let otherStr = 'I am implicitly defined as a string type'
+
+function printMsg(message: string): void {
+    console.log(message)
+}
+
+printMsg(str) //Totally okay
+printMsg(otherStr) // Also okay!
 ```
+
+In essence, typescript looks at a variable that isn't typed (in this case `otherStr`) and says, "This looks like a string, follows the sytax of a string, must be a string!"
+![Must be gelfling](https://66.media.tumblr.com/tumblr_m32hrruhGr1qdj4i3o1_r1_500.gif)
+
+This will be more apparent and relevant when we get into interfaces and enforcing object type structures in the next section.
 
 The rules that govern these type inferences can vary and/or be configured by the compiler. In general, if the data type is not primitive, it is unlikely that implicit typping will work.
 
