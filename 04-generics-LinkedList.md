@@ -59,10 +59,10 @@ export class LinkedList<T> {
     }
   }
 
-  delete<T>(deleteIndex: number): T {
-    if (this.length > 0 && deleteIndex <= this.length - 1) {
-      let result
-      if (deleteIndex === 0) {
+  delete(index: number): T {
+    if (this.length > 0 && index <= this.length - 1) {
+      var result
+      if (index === 0) {
         result = this.head.data
         this.length--
         if (this.head.next) {
@@ -77,13 +77,13 @@ export class LinkedList<T> {
         let currentIndex = 0
         let current = this.head
         let previous
-        while (currentIndex < deleteIndex) {
+        while (currentIndex < index) {
           previous = current
           current = current.next
           currentIndex++
         }
         result = current.data
-        if (deleteIndex === this.length - 1) {
+        if (index === this.length - 1) {
           this.tail = previous
         }
         previous.next = current.next
